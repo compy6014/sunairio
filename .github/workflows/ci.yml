@@ -11,9 +11,25 @@ on:
         description: "Right integer value"
         required: true
         default: "2"
+      run_lint:
+        description: "Run Ruff lint"
+        type: boolean
+        required: false
+        default: true
+      run_test:
+        description: "Run Pytest with coverage"
+        type: boolean
+        required: false
+        default: true
+      run_trivy:
+        description: "Run Trivy Image Scan"
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   lint:
+    if: ${{ github.event.inputs.run_lint == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,15 +50,15 @@ jobs:
           ruff check . | tee ruff.txt
       
       - name: Add Ruff summary
-        if: always()
         run: |
           echo "## Ruff Lint results" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat ruff.txt >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
+  
   test:
+    if: ${{ github.event.inputs.run_test == 'true' }}
     runs-on: ubuntu-latest
-    # needs: lint
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -64,7 +80,6 @@ jobs:
           pytest --cov=app --cov-report=term | tee pytest.txt
       
       - name: Add coverage summary
-        if: always()
         run: |
           echo "## Test Coverage" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
@@ -113,6 +128,7 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Scan Docker image with Trivy
+        if: ${{ github.event.inputs.run_trivy == 'true' }}
         id: trivy_scan
         uses: aquasecurity/trivy-action@0.34.1
         with:
@@ -124,7 +140,7 @@ jobs:
           output: trivy.txt
           
       - name: Add Trivy Scan to summary
-        if: always()
+        if: ${{ github.event.inputs.run_trivy == 'true' }}
         run: |
           echo "## Trivy Scan Results" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
