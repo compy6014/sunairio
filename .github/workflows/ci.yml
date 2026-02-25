@@ -79,12 +79,12 @@ jobs:
           docker run -d -p 8000:8000 --name test-container simple-web-app:${{ github.sha }}
           for i in {1..10}; do
             if curl -s http://localhost:8000/health; then
-              echo "/nApp is up"
-              curl -s "http://localhost:8000/add?left=10&right=-12"
+              echo $'App is up'
+              curl -s http://localhost:8000/add?left=10&right=-12
               exit 0
             fi
             sleep 2
           done
-          echo "/nApp failed to start"
+          echo $'App failed to start'
           docker logs test-container
           exit 1
