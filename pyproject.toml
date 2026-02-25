@@ -10,8 +10,8 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "simple-add-app"
-version = "0.1.0"
+name = "simple-web-app"
+version = "1.0.0"
 
 [tool.setuptools.packages.find]
 where = ["."]
