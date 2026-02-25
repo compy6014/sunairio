@@ -53,15 +53,17 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
           pip install -e .
+      
       - name: Run tests with coverage
         run: |
-          pytest --cov=app --cov-report=term --cov-report=xml | tee pytest.txt
+          pytest --cov=app --cov-report=term | tee pytest.txt
+      
       - name: Add coverage summary
         if: always()
         run: |
           echo "## Test Coverage" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -A 20 "coverage:" pytest.txt >> $GITHUB-STEP_SUMMARY
+          cat pytest.txt >> $GITHUB-STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
          
   docker-build:
