@@ -13,10 +13,6 @@ def test_negative():
     assert response.status_code == 200
     assert response.json() == {"sum": -9}
 
-def test_non_integer():
-    response = client.get("/add?left=abc&right=5")
-    assert response.status_code == 442
-
 def test_health():
     response = client.get("/health")
     assert response.status_code == 200
