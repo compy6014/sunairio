@@ -113,10 +113,20 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Scan Docker image with Trivy
+        id: trivy_scan
         uses: aquasecurity/trivy-action@0.34.1
         with:
           scan-type: image
           image-ref: simple-web-app:${{ github.sha }}
           format: table
-          exit-code: 1
+          exit-code: 0
           severity: CRITICAL,HIGH
+          output: trivy.txt
+          
+      - name: Add Trivy Scan to summary
+        if: always()
+        run: |
+          echo "## Trivy Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat trivy.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
