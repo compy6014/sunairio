@@ -22,12 +22,12 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
           cache: 'pip'
       
-      - name: Install requirements-dev
+      - name: Install Ruff dependencies
         run: |
-          pip install -r requirements-dev.txt
+          pip install ruff
       
       - name: Run Ruff
         run: |
@@ -50,10 +50,10 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
           cache: 'pip'
       
-      - name: Install requirements
+      - name: Install test dependencies
         run: |
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
@@ -83,12 +83,12 @@ jobs:
       - name: Run container
         run: |
           docker run -d -p 8000:8000 --name test-container simple-web-app:${{ github.sha }}
-          for i in {1..10}; do
+          for i in {1..5}; do
             if curl -s "http://localhost:8000/health"; then
               echo -e '\nApp is up'
               exit 0
             fi
-            sleep 5
+            sleep 3
           done
           echo -e 'App failed to start'
           docker logs test-container
@@ -99,7 +99,6 @@ jobs:
         run: |
           LEFT=${{ github.event.inputs.left }}
           RIGHT=${{ github.event.inputs.right }}
-
           RESPONSE=$(curl -s "http://localhost:8000/add?left=${LEFT}&right=${RIGHT}")
           echo "response=$RESPONSE" >> $GITHUB_OUTPUT
       
