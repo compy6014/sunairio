@@ -1,10 +1,16 @@
 name: Simple CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-
+  workflow_dispatch:
+    inputs:
+      left:
+        description: "Left integer value"
+        required: true
+        default: "5"
+      right:
+        description: "Right integer value"
+        required: true
+        default: "2"
 
 jobs:
   lint:
@@ -80,11 +86,27 @@ jobs:
           for i in {1..10}; do
             if curl -s "http://localhost:8000/health"; then
               echo -e '\nApp is up'
-              curl -s "http://localhost:8000/add?left=10&right=-12"
+              #curl -s "http://localhost:8000/add?left=10&right=-12"
               exit 0
             fi
-            sleep 2
+            sleep 5
           done
           echo -e 'App failed to start'
           docker logs test-container
           exit 1
+      - name: Call /add endpoint
+        id: call_api
+        run: |
+          LEFT=${{ github.event.inputs.left }}
+          RIGHT=${{ github.event.inputs.right }}
+
+          RESPONSE=$(curl -s "http://localhost:8000/add?left=${LEFT}&rigth=${RIGHT}")
+          echo "response=$RESPONSE" >> $GITHUB_OUTPUT
+      - name: Add result to summary
+        run: |
+          echo "## Web App Test Result" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Input parameters" >> $GITHUB_STEP_SUMMARY
+          echo "Left: ${{ github.event.inputs.left }}" >> $GITHUB_STEP_SUMMARY
+          echo "Right: ${{ github.event.inputs.right }}" >> $GITHUB_STEP_SUMMARY
+          echo "Result: ${{ steps.call_api.outputs.response }}" >> $GITHUB_STEP_SUMMARY
