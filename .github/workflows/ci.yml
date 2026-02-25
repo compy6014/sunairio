@@ -104,7 +104,7 @@ jobs:
       
       - name: Add result to summary
         run: |
-          echo "## Web App Test Result" >> $GITHUB_STEP_SUMMARY
+          echo "## Web App Smoke Test" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "Input parameters" >> $GITHUB_STEP_SUMMARY
           echo "Left: ${{ github.event.inputs.left }}" >> $GITHUB_STEP_SUMMARY
