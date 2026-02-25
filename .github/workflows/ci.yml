@@ -116,7 +116,7 @@ jobs:
     needs: docker-build
     steps:
       - name: Scan Docker image with Trivy
-        uses: aquasecurity/trivy-action@v2
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           scan-type: image
           image-ref: simple-web-app:${{ github.sha }}
