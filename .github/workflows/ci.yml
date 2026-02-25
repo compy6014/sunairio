@@ -42,7 +42,7 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
   test:
     runs-on: ubuntu-latest
-    needs: lint
+    # needs: lint
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
          
   docker-build:
     runs-on: ubuntu-latest
-    needs: test
+    needs: [lint, test]
     steps:
       - uses: actions/checkout@v4
       
@@ -86,7 +86,6 @@ jobs:
           for i in {1..10}; do
             if curl -s "http://localhost:8000/health"; then
               echo -e '\nApp is up'
-              #curl -s "http://localhost:8000/add?left=10&right=-12"
               exit 0
             fi
             sleep 5
@@ -94,6 +93,7 @@ jobs:
           echo -e 'App failed to start'
           docker logs test-container
           exit 1
+      
       - name: Call /add endpoint
         id: call_api
         run: |
@@ -102,11 +102,13 @@ jobs:
 
           RESPONSE=$(curl -s "http://localhost:8000/add?left=${LEFT}&right=${RIGHT}")
           echo "response=$RESPONSE" >> $GITHUB_OUTPUT
+      
       - name: Add result to summary
         run: |
           echo "## Web App Test Result" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
           echo "Input parameters" >> $GITHUB_STEP_SUMMARY
           echo "Left: ${{ github.event.inputs.left }}" >> $GITHUB_STEP_SUMMARY
           echo "Right: ${{ github.event.inputs.right }}" >> $GITHUB_STEP_SUMMARY
           echo "Result: ${{ steps.call_api.outputs.response }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
