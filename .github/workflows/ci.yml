@@ -100,7 +100,7 @@ jobs:
           LEFT=${{ github.event.inputs.left }}
           RIGHT=${{ github.event.inputs.right }}
 
-          RESPONSE=$(curl -s "http://localhost:8000/add?left=${LEFT}&rigth=${RIGHT}")
+          RESPONSE=$(curl -s "http://localhost:8000/add?left=${LEFT}&right=${RIGHT}")
           echo "response=$RESPONSE" >> $GITHUB_OUTPUT
       - name: Add result to summary
         run: |
