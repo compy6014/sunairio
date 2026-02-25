@@ -4,3 +4,15 @@ target-version = "py311"
 
 [tool.pytest.ini_options]
 addopts = "--cov=app --cov-report=term-missing"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "simple-add-app"
+version = "0.1.0"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
