@@ -22,7 +22,6 @@ jobs:
       - name: Install requirements-dev
         run: |
           pip install -r requirements-dev.txt
-          ruff check .
       
       - name: Run Ruff
         run: |
@@ -63,7 +62,7 @@ jobs:
         run: |
           echo "## Test Coverage" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          cat pytest.txt >> $GITHUB-STEP_SUMMARY
+          cat pytest.txt >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
          
   docker-build:
