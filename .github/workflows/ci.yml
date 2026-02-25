@@ -48,6 +48,6 @@ jobs:
 
       - name: Run container
         run: |
-          docker run -d -p 8000:8000 -name test-container simple-web-app:${{ github.sha }}
+          docker run -d -p 8000:8000 --name test-container simple-web-app:${{ github.sha }}
           sleep 5
           curl --fail http://localhost:8000/health
