@@ -34,7 +34,7 @@ jobs:
           echo "## Ruff Lint results" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat ruff.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >>> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
   test:
     runs-on: ubuntu-latest
     needs: lint
