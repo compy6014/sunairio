@@ -27,7 +27,7 @@ jobs:
       
       - name: Install Ruff dependencies
         run: |
-          pip install ruff
+          pip install -r requirements-lint.txt
       
       - name: Run Ruff
         run: |
@@ -56,7 +56,7 @@ jobs:
       - name: Install test dependencies
         run: |
           pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+          pip install -r requirements-test.txt
           pip install -e .
       
       - name: Run tests with coverage
