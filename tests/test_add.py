@@ -9,9 +9,9 @@ def test_positive():
     assert response.json() == {"sum": 7}
 
 def test_negative():
-    response = client.get("/add?left=-5&right=-2")
+    response = client.get("/add?left=-15&right=6")
     assert response.status_code == 200
-    assert response.json() == {"sum": -7}
+    assert response.json() == {"sum": -9}
 
 def test_non_integer():
     response = client.get("/add?left=abc&right=5")
