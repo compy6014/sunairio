@@ -4,21 +4,6 @@ A minimal FastAPI-based web application, with a fully featured CI/CD pipeline us
 
 ---
 
-## Table of Contents
-
-- [Features](#features)
-- [Application Endpoints](#application-endpoints)
-- [Project Structure](#project-structure)
-- [Development Environment](#development-environment)
-- [Running the App Locally](#running-the-app-locally)
-- [Testing](#testing)
-- [CI/CD Workflow](#cicd-workflow)
-- [Docker Setup](#docker-setup)
-- [Trivy Vulnerability Scanning](#trivy-vulnerability-scanning)
-- [Configuration Files](#configuration-files)
-
----
-
 ## 📐 Features
 
 - FastAPI-based web application
